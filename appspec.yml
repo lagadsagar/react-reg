@@ -3,9 +3,14 @@ os: linux
 files:
   - source: /build
     destination: /var/www/html
+
 hooks:
-  AfterInstall:
+  BeforeInstall:
     - location: scripts/install-nginx.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: scripts/start-nginx.sh
       timeout: 300
       runas: root
   ApplicationStart:
