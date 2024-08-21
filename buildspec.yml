@@ -1,22 +1,24 @@
+
 version: 0.2
 
 phases:
   install:
     runtime-versions:
-      nodejs: 20.14.0
+      nodejs: latest
     commands:
-      - echo Installing dependencies...
       - npm install
   build:
     commands:
-      - echo Build started on `date`
-      - npm run build
+      - npm run build 
   post_build:
     commands:
-      - echo Build completed on `date`
-      - echo Zipping build files...
-      - zip -r build.zip build/
+      - mkdir deployment-package # Create a temporary directory 
+      - cp -r build deployment-package/ # Copy build output
+      - cp -r scripts deployment-package/ # Copy scrips 
+      - cp appspec.yml deployment-package/
+      - cp buildspec.yml deployment-package/
 
 artifacts:
   files:
-    - build.zip
+    - deployment-package/**/* # Package the temporary directory contents 
+  base-directory: ./ # Specify the root for artifact collection
